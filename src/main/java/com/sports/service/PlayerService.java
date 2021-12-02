@@ -31,5 +31,25 @@ public class PlayerService {
             throw e;
         }
     }
+
+    @Transactional(readOnly = true)
+    public ScoreModel getScore(Long id) {
+        try {
+            return ObjectMapper.OBJECT_MAPPER.scoreToScoreModel(playerRepository.getOne(id));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw e;
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteScore(Long id) {
+        try {
+             playerRepository.deleteById(id);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw e;
+        }
+    }
 }
 
