@@ -1,6 +1,8 @@
 package com.sports.service;
 
-import com.sports.model.Score;
+import com.sports.entity.Score;
+import com.sports.mapper.ObjectMapper;
+import com.sports.model.ScoreModel;
 import com.sports.repository.PlayerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,14 @@ public class PlayerService {
 
     /**
      * save Score
-     * @param score
+     * @param scoreModel
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public Score registerScore(Score score) {
+    public ScoreModel registerScore(ScoreModel scoreModel) {
         try {
-            return playerRepository.save(score);
+            Score score = ObjectMapper.OBJECT_MAPPER.scoreModelToScore(scoreModel);
+            return ObjectMapper.OBJECT_MAPPER.scoreToScoreModel(playerRepository.save(score));
         } catch (Exception e) {
             log.error(e.getMessage());
             throw e;
