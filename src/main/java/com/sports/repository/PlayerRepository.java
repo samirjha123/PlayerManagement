@@ -22,4 +22,5 @@ public interface PlayerRepository extends JpaRepository<Score, Long>, JpaSpecifi
 
     Page<Score> findAllByTimeBefore(String time,  Pageable pageable);
 
+    List<Score> findAllByPlayer(String player);
 }
