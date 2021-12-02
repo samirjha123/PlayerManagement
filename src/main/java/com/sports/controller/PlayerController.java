@@ -4,11 +4,16 @@ import com.sports.constants.Constants;
 import com.sports.model.ScoreModel;
 import com.sports.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(Constants.PLAYER)
@@ -33,5 +38,11 @@ public class PlayerController {
     public ResponseEntity<String> deleteScore(@PathVariable Long id) {
         playerService.deleteScore(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
+
+    @GetMapping(value = "/list")
+    public ResponseEntity<Page> blogPageable(Pageable pageable, @RequestParam(required = false) String playerName, @RequestParam(required = false)  String time, @RequestParam(required = false)  boolean after) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(playerService.findScores(pageable, playerName, time, after));
     }
 }
