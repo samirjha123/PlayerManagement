@@ -40,8 +40,12 @@ public class PlayerController {
      */
     @GetMapping(Constants.GET)
     public ResponseEntity<ScoreModel> getScore(@NotNull @RequestParam Long id) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(playerService.getScore(id));
+        ScoreModel score = playerService.getScore(id);
+        if(score != null) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(score);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     /**
@@ -76,7 +80,11 @@ public class PlayerController {
      */
     @GetMapping(Constants.GET_HISTORY)
     public ResponseEntity<PlayerHistory> getHistory(@NotNull @RequestParam String name) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(playerService.getHistory(name));
+        PlayerHistory history = playerService.getHistory(name);
+        if(history != null) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(history);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }

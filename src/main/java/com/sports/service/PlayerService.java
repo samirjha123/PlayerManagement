@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,6 +48,8 @@ public class PlayerService {
     public ScoreModel getScore(Long id) {
         try {
             return ObjectMapper.OBJECT_MAPPER.scoreToScoreModel(playerRepository.getOne(id));
+        } catch (EntityNotFoundException en){
+            return null;
         } catch (Exception e) {
             log.error(e.getMessage());
             throw e;
@@ -101,7 +104,7 @@ public class PlayerService {
 
     /**
      * To get scores history of a player
-     * @param names
+     * @param name
      * @return
      */
     @Transactional(readOnly = true)
@@ -109,6 +112,9 @@ public class PlayerService {
         try {
             PlayerHistory history = new PlayerHistory();
             List<Score> result = playerRepository.findByPlayerIn(Arrays.asList(name));
+            if(result == null || result.size() == 0){
+                return null;
+            }
             history.setScores(result);
             double averageScore;
             int lowScore = Integer.MAX_VALUE;
