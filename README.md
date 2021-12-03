@@ -3,8 +3,11 @@
 A Java coding skill test.
 
 # How to build
-* Windows/Linux/Mac:
-  mvn clean spring-boot:run
+## Database Preparation:
+  * Change Database properties in {project}/src/resources/application.properties file,
+  * Execute {project}/sql/ddl.sql file
+## Windows/Linux/Mac:
+  * mvn clean spring-boot:run
 
 # I/Fs specification:
 ## 1. {{end-point}}/player/register
