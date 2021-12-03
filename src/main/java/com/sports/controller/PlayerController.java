@@ -68,7 +68,7 @@ public class PlayerController {
      * @return
      */
     @GetMapping(value = "/list")
-    public ResponseEntity<Page> blogPageable(Pageable pageable, @RequestParam(required = false) String playerNames, @RequestParam(required = false)  String time, @RequestParam(required = false)  boolean after) {
+    public ResponseEntity<Page> scorePageable(Pageable pageable, @RequestParam(required = false) String playerNames, @RequestParam(required = false)  String time, @RequestParam(required = false)  boolean after) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(playerService.findScores(pageable, Arrays.asList(playerNames.split(",", -1)), time, after));
     }

@@ -1,11 +1,14 @@
 package com.sports.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sports.entity.PlayerHistory;
+import com.sports.entity.Score;
 import com.sports.model.ScoreModel;
 import com.sports.repository.PlayerRepository;
 import com.sports.service.PlayerService;
 import org.hamcrest.Matchers;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -13,8 +16,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Function;
 
 import static org.mockito.Mockito.doNothing;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,6 +50,9 @@ public class PlayerControllerTest {
 
     @MockBean
     private PlayerRepository playerRepository;
+
+    @MockBean
+    Pageable pageable;
 
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -78,9 +94,29 @@ public class PlayerControllerTest {
 
 
     @Test
-    public void testDeleteExample() throws Exception {
+    public void testDeleteScore() throws Exception {
         doNothing().when(playerService).deleteScore(ArgumentMatchers.anyLong());
         this.mockMvc.perform(delete("/player/delete/3"))
                 .andExpect(status().isAccepted()).andReturn();
+    }
+
+    @Test
+    public void testListScore() throws Exception {
+
+        Score score = new Score();
+        score.setId(1L);
+        score.setScore(25);
+        score.setPlayer("samir");
+        score.setTime("2021-08-16 20:43:39");
+
+        PlayerHistory history = new PlayerHistory();
+        history.setHighScore(100);
+        history.setAverageScore(20);
+        history.setLowScore(1);
+        history.setScores(Arrays.asList(score));
+
+        Mockito.when(playerService.getHistory( "samir")).thenReturn(history);
+        mockMvc.perform(get("/player/getHistory").param("name", "samir")).andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.aMapWithSize(4)))
+                .andExpect(jsonPath("$.highScore", Matchers.equalTo(100)));
     }
 }
