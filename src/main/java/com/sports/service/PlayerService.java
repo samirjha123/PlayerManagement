@@ -69,22 +69,22 @@ public class PlayerService {
     /**
      * To list scores of players and between date range
      * @param pageable
-     * @param playerName
+     * @param playerNames
      * @param time
      * @param after
      * @return
      */
     @Transactional(readOnly = true)
-    public Page<Score> findScores(Pageable pageable, String playerName, String time, boolean after) {
+    public Page<Score> findScores(Pageable pageable, List<String> playerNames, String time, boolean after) {
         try {
-            if(playerName != null){
+            if(playerNames != null){
                 if(time != null){
                     if(after == true){
-                        return playerRepository.findAllByPlayerAndTimeAfter(playerName, time, pageable);
+                        return playerRepository.findByPlayerInAndTimeAfter(playerNames, time, pageable);
                     }
-                    return playerRepository.findAllByPlayerContainingIgnoreCaseAndTimeBefore(playerName, time, pageable);
+                    return playerRepository.findByPlayerInAndTimeBefore(playerNames, time, pageable);
                 }
-                return playerRepository.findAllByPlayerContainingIgnoreCase(playerName, pageable);
+                return playerRepository.findByPlayerIn(playerNames, pageable);
             } else if(time != null){
                 if(after == true){
                     return playerRepository.findAllByTimeAfter(time, pageable);
@@ -100,14 +100,14 @@ public class PlayerService {
 
     /**
      * To get scores history of a player
-     * @param name
+     * @param names
      * @return
      */
     @Transactional(readOnly = true)
-    public PlayerHistory getHistory(String name) {
+    public PlayerHistory getHistory(List<String> names) {
         try {
             PlayerHistory history = new PlayerHistory();
-            List<Score> result = playerRepository.findAllByPlayerContainingIgnoreCase(name);
+            List<Score> result = playerRepository.findByPlayerIn(names);
             history.setScores(result);
             double averageScore;
             int lowScore = Integer.MAX_VALUE;

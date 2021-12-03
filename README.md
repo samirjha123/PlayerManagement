@@ -106,7 +106,7 @@ curl --location --request GET 'localhost:8084/player/getHistory?name=gghghg' \
 ## 5. {{end-point}}/player/list
 ## Request
 ``` 
-curl --location --request GET 'localhost:8084/player/list?playerName=gghghg&time=2021-08-19 20:43:39&after=false' \
+curl --location --request GET 'localhost:8084/player/list?playerNames=vvV,gghghg&time=2021-08-19 20:43:39&after=false' \
 --header 'Cookie: JSESSIONID=AC54ACC006FB760C4C83A09B20E4AFC8'
 ```
 
@@ -131,6 +131,18 @@ curl --location --request GET 'localhost:8084/player/list?playerName=gghghg&time
             "player": "gghghg",
             "score": 35,
             "time": "2021-08-16 20:43:39"
+        },
+        {
+            "id": 11,
+            "player": "vvv",
+            "score": 890,
+            "time": "2021-08-17 20:43:39"
+        },
+        {
+            "id": 12,
+            "player": "vvV",
+            "score": 890,
+            "time": "2021-08-17 20:43:39"
         }
     ],
     "pageable": {
@@ -139,24 +151,24 @@ curl --location --request GET 'localhost:8084/player/list?playerName=gghghg&time
             "unsorted": true,
             "empty": true
         },
-        "offset": 0,
         "pageNumber": 0,
         "pageSize": 20,
+        "offset": 0,
         "paged": true,
         "unpaged": false
     },
     "last": true,
     "totalPages": 1,
-    "totalElements": 3,
-    "first": true,
-    "number": 0,
-    "numberOfElements": 3,
-    "size": 20,
+    "totalElements": 5,
+    "numberOfElements": 5,
     "sort": {
         "sorted": false,
         "unsorted": true,
         "empty": true
     },
+    "first": true,
+    "number": 0,
+    "size": 20,
     "empty": false
 }
 ```

@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping(Constants.PLAYER)
@@ -55,25 +57,25 @@ public class PlayerController {
     /**
      * To list scores of players and between date range
      * @param pageable
-     * @param playerName
+     * @param playerNames
      * @param time
      * @param after
      * @return
      */
     @GetMapping(value = "/list")
-    public ResponseEntity<Page> blogPageable(Pageable pageable, @RequestParam(required = false) String playerName, @RequestParam(required = false)  String time, @RequestParam(required = false)  boolean after) {
+    public ResponseEntity<Page> blogPageable(Pageable pageable, @RequestParam(required = false) String playerNames, @RequestParam(required = false)  String time, @RequestParam(required = false)  boolean after) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(playerService.findScores(pageable, playerName, time, after));
+                .body(playerService.findScores(pageable, Arrays.asList(playerNames.split(",", -1)), time, after));
     }
 
     /**
      * To get scores history of a player
-     * @param name
+     * @param names
      * @return
      */
     @GetMapping(Constants.GET_HISTORY)
-    public ResponseEntity<PlayerHistory> getHistory(@RequestParam String name) {
+    public ResponseEntity<PlayerHistory> getHistory(@RequestParam List<String> names) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(playerService.getHistory(name));
+                .body(playerService.getHistory(names));
     }
 }
