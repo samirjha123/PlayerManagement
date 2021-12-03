@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -104,10 +105,10 @@ public class PlayerService {
      * @return
      */
     @Transactional(readOnly = true)
-    public PlayerHistory getHistory(List<String> names) {
+    public PlayerHistory getHistory(String name) {
         try {
             PlayerHistory history = new PlayerHistory();
-            List<Score> result = playerRepository.findByPlayerIn(names);
+            List<Score> result = playerRepository.findByPlayerIn(Arrays.asList(name));
             history.setScores(result);
             double averageScore;
             int lowScore = Integer.MAX_VALUE;

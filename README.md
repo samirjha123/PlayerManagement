@@ -65,7 +65,7 @@ curl --location --request DELETE 'localhost:8084/player/delete/6' \
 ## 4. {{end-point}}/player/getHistory
 ## Request
 ``` 
-curl --location --request GET 'localhost:8084/player/getHistory?name=gghghg' \
+curl --location --request GET 'localhost:8084/player/getHistory?names=gghghg' \
 --header 'Cookie: JSESSIONID=AC54ACC006FB760C4C83A09B20E4AFC8' 
 ```
 

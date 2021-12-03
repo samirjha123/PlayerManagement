@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class PlayerController {
      * @return
      */
     @GetMapping(Constants.GET)
-    public ResponseEntity<ScoreModel> getScore(@RequestParam Long id) {
+    public ResponseEntity<ScoreModel> getScore(@NotNull @RequestParam Long id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(playerService.getScore(id));
     }
@@ -70,12 +71,12 @@ public class PlayerController {
 
     /**
      * To get scores history of a player
-     * @param names
+     * @param name
      * @return
      */
     @GetMapping(Constants.GET_HISTORY)
-    public ResponseEntity<PlayerHistory> getHistory(@RequestParam List<String> names) {
+    public ResponseEntity<PlayerHistory> getHistory(@NotNull @RequestParam String name) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(playerService.getHistory(names));
+                .body(playerService.getHistory(name));
     }
 }
