@@ -19,30 +19,58 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
+    /**
+     * To register score of player
+     * @param score
+     * @return
+     */
     @PostMapping(Constants.REGISTER)
     public ResponseEntity<ScoreModel> registerScore(@Valid @RequestBody ScoreModel score) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(playerService.registerScore(score));
     }
 
+    /**
+     * To get score of a player
+     * @param id
+     * @return
+     */
     @GetMapping(Constants.GET)
     public ResponseEntity<ScoreModel> getScore(@RequestParam Long id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(playerService.getScore(id));
     }
 
+    /**
+     * To delete score of a player
+     * @param id
+     * @return
+     */
     @DeleteMapping(Constants.DELETE + "/{id}")
     public ResponseEntity<String> deleteScore(@PathVariable Long id) {
         playerService.deleteScore(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
+    /**
+     * To list scores of players and between date range
+     * @param pageable
+     * @param playerName
+     * @param time
+     * @param after
+     * @return
+     */
     @GetMapping(value = "/list")
     public ResponseEntity<Page> blogPageable(Pageable pageable, @RequestParam(required = false) String playerName, @RequestParam(required = false)  String time, @RequestParam(required = false)  boolean after) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(playerService.findScores(pageable, playerName, time, after));
     }
 
+    /**
+     * To get scores history of a player
+     * @param name
+     * @return
+     */
     @GetMapping(Constants.GET_HISTORY)
     public ResponseEntity<PlayerHistory> getHistory(@RequestParam String name) {
         return ResponseEntity.status(HttpStatus.OK)
