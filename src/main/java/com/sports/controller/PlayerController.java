@@ -62,25 +62,25 @@ public class PlayerController {
     /**
      * To list scores of players and between date range
      * @param pageable
-     * @param playerNames
+     * @param players
      * @param time
      * @param after
      * @return
      */
     @GetMapping(value = "/list")
-    public ResponseEntity<Page> scorePageable(Pageable pageable, @RequestParam(required = false) String playerNames, @RequestParam(required = false)  String time, @RequestParam(required = false)  boolean after) {
+    public ResponseEntity<Page> scorePageable(Pageable pageable, @RequestParam(required = false) String players, @RequestParam(required = false)  String time, @RequestParam(required = false)  boolean after) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(playerService.findScores(pageable, Arrays.asList(playerNames.split(",", -1)), time, after));
+                .body(playerService.findScores(pageable, Arrays.asList(players.split(",", -1)), time, after));
     }
 
     /**
      * To get scores history of a player
-     * @param name
+     * @param player
      * @return
      */
     @GetMapping(Constants.GET_HISTORY)
-    public ResponseEntity<PlayerHistory> getHistory(@NotNull @RequestParam String name) {
-        PlayerHistory history = playerService.getHistory(name);
+    public ResponseEntity<PlayerHistory> getHistory(@NotNull @RequestParam String player) {
+        PlayerHistory history = playerService.getHistory(player);
         if(history != null) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(history);

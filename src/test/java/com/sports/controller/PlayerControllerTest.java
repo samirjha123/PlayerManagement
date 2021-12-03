@@ -116,7 +116,7 @@ public class PlayerControllerTest {
         history.setScores(Arrays.asList(score));
 
         Mockito.when(playerService.getHistory( "samir")).thenReturn(history);
-        mockMvc.perform(get("/player/getHistory").param("name", "samir")).andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.aMapWithSize(4)))
+        mockMvc.perform(get("/player/getHistory").param("player", "samir")).andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.aMapWithSize(4)))
                 .andExpect(jsonPath("$.highScore", Matchers.equalTo(100)));
     }
 }
