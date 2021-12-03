@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -46,6 +48,8 @@ public class PlayerService {
     public ScoreModel getScore(Long id) {
         try {
             return ObjectMapper.OBJECT_MAPPER.scoreToScoreModel(playerRepository.getOne(id));
+        } catch (EntityNotFoundException en){
+            return null;
         } catch (Exception e) {
             log.error(e.getMessage());
             throw e;
@@ -69,22 +73,22 @@ public class PlayerService {
     /**
      * To list scores of players and between date range
      * @param pageable
-     * @param playerName
+     * @param playerNames
      * @param time
      * @param after
      * @return
      */
     @Transactional(readOnly = true)
-    public Page<Score> findScores(Pageable pageable, String playerName, String time, boolean after) {
+    public Page<Score> findScores(Pageable pageable, List<String> playerNames, String time, boolean after) {
         try {
-            if(playerName != null){
+            if(playerNames != null){
                 if(time != null){
                     if(after == true){
-                        return playerRepository.findAllByPlayerAndTimeAfter(playerName, time, pageable);
+                        return playerRepository.findByPlayerInAndTimeAfter(playerNames, time, pageable);
                     }
-                    return playerRepository.findAllByPlayerAndTimeBefore(playerName, time, pageable);
+                    return playerRepository.findByPlayerInAndTimeBefore(playerNames, time, pageable);
                 }
-                return playerRepository.findAllByPlayer(playerName, pageable);
+                return playerRepository.findByPlayerIn(playerNames, pageable);
             } else if(time != null){
                 if(after == true){
                     return playerRepository.findAllByTimeAfter(time, pageable);
@@ -107,7 +111,10 @@ public class PlayerService {
     public PlayerHistory getHistory(String name) {
         try {
             PlayerHistory history = new PlayerHistory();
-            List<Score> result = playerRepository.findAllByPlayer(name);
+            List<Score> result = playerRepository.findByPlayerIn(Arrays.asList(name));
+            if(result == null || result.size() == 0){
+                return null;
+            }
             history.setScores(result);
             double averageScore;
             int lowScore = Integer.MAX_VALUE;

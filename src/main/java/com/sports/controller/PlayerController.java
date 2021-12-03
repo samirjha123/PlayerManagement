@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping(Constants.PLAYER)
@@ -36,9 +39,13 @@ public class PlayerController {
      * @return
      */
     @GetMapping(Constants.GET)
-    public ResponseEntity<ScoreModel> getScore(@RequestParam Long id) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(playerService.getScore(id));
+    public ResponseEntity<ScoreModel> getScore(@NotNull @RequestParam Long id) {
+        ScoreModel score = playerService.getScore(id);
+        if(score != null) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(score);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     /**
@@ -55,25 +62,29 @@ public class PlayerController {
     /**
      * To list scores of players and between date range
      * @param pageable
-     * @param playerName
+     * @param players
      * @param time
      * @param after
      * @return
      */
     @GetMapping(value = "/list")
-    public ResponseEntity<Page> blogPageable(Pageable pageable, @RequestParam(required = false) String playerName, @RequestParam(required = false)  String time, @RequestParam(required = false)  boolean after) {
+    public ResponseEntity<Page> scorePageable(Pageable pageable, @RequestParam(required = false) String players, @RequestParam(required = false)  String time, @RequestParam(required = false)  boolean after) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(playerService.findScores(pageable, playerName, time, after));
+                .body(playerService.findScores(pageable, Arrays.asList(players.split(",", -1)), time, after));
     }
 
     /**
      * To get scores history of a player
-     * @param name
+     * @param player
      * @return
      */
     @GetMapping(Constants.GET_HISTORY)
-    public ResponseEntity<PlayerHistory> getHistory(@RequestParam String name) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(playerService.getHistory(name));
+    public ResponseEntity<PlayerHistory> getHistory(@NotNull @RequestParam String player) {
+        PlayerHistory history = playerService.getHistory(player);
+        if(history != null) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(history);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
