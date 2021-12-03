@@ -82,9 +82,9 @@ public class PlayerService {
                     if(after == true){
                         return playerRepository.findAllByPlayerAndTimeAfter(playerName, time, pageable);
                     }
-                    return playerRepository.findAllByPlayerAndTimeBefore(playerName, time, pageable);
+                    return playerRepository.findAllByPlayerContainingIgnoreCaseAndTimeBefore(playerName, time, pageable);
                 }
-                return playerRepository.findAllByPlayer(playerName, pageable);
+                return playerRepository.findAllByPlayerContainingIgnoreCase(playerName, pageable);
             } else if(time != null){
                 if(after == true){
                     return playerRepository.findAllByTimeAfter(time, pageable);
@@ -107,7 +107,7 @@ public class PlayerService {
     public PlayerHistory getHistory(String name) {
         try {
             PlayerHistory history = new PlayerHistory();
-            List<Score> result = playerRepository.findAllByPlayer(name);
+            List<Score> result = playerRepository.findAllByPlayerContainingIgnoreCase(name);
             history.setScores(result);
             double averageScore;
             int lowScore = Integer.MAX_VALUE;

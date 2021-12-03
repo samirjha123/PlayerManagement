@@ -14,13 +14,13 @@ public interface PlayerRepository extends JpaRepository<Score, Long>, JpaSpecifi
 
     Page<Score> findAllByPlayerAndTimeAfter(String player, String time, Pageable pageable);
 
-    Page<Score> findAllByPlayerAndTimeBefore(String player, String time,  Pageable pageable);
+    Page<Score> findAllByPlayerContainingIgnoreCaseAndTimeBefore(String player, String time,  Pageable pageable);
 
-    Page<Score> findAllByPlayer(String player,  Pageable pageable);
+    Page<Score> findAllByPlayerContainingIgnoreCase(String player,  Pageable pageable);
 
     Page<Score> findAllByTimeAfter(String time, Pageable pageable);
 
     Page<Score> findAllByTimeBefore(String time,  Pageable pageable);
 
-    List<Score> findAllByPlayer(String player);
+    List<Score> findAllByPlayerContainingIgnoreCase(String player);
 }

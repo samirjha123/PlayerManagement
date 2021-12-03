@@ -7,7 +7,7 @@ A Java coding skill test.
   * Change Database properties in {project}/src/resources/application.properties file,
   * Execute {project}/sql/ddl.sql file
 ## Windows/Linux/Mac:
-  * mvn clean spring-boot:run
+  * mvn spring-boot:run
 
 # I/Fs specification:
 ## 1. {{end-point}}/player/register
