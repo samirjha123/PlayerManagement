@@ -37,6 +37,11 @@ public class PlayerService {
         }
     }
 
+    /**
+     * To get score of a player
+     * @param id
+     * @return
+     */
     @Transactional(readOnly = true)
     public ScoreModel getScore(Long id) {
         try {
@@ -47,6 +52,10 @@ public class PlayerService {
         }
     }
 
+    /**
+     * To delete score of a player
+     * @param id
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteScore(Long id) {
         try {
@@ -57,6 +66,14 @@ public class PlayerService {
         }
     }
 
+    /**
+     * To list scores of players and between date range
+     * @param pageable
+     * @param playerName
+     * @param time
+     * @param after
+     * @return
+     */
     @Transactional(readOnly = true)
     public Page<Score> findScores(Pageable pageable, String playerName, String time, boolean after) {
         try {
@@ -81,6 +98,11 @@ public class PlayerService {
         }
     }
 
+    /**
+     * To get scores history of a player
+     * @param name
+     * @return
+     */
     @Transactional(readOnly = true)
     public PlayerHistory getHistory(String name) {
         try {
