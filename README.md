@@ -65,7 +65,7 @@ curl --location --request DELETE 'localhost:8084/player/delete/6' \
 ## 4. {{end-point}}/player/getHistory
 ## Request
 ``` 
-curl --location --request GET 'localhost:8084/player/getHistory?names=gghghg' \
+curl --location --request GET 'localhost:8084/player/getHistory?player=gghghg' \
 --header 'Cookie: JSESSIONID=AC54ACC006FB760C4C83A09B20E4AFC8' 
 ```
 
@@ -106,7 +106,7 @@ curl --location --request GET 'localhost:8084/player/getHistory?names=gghghg' \
 ## 5. {{end-point}}/player/list
 ## Request
 ``` 
-curl --location --request GET 'localhost:8084/player/list?playerNames=vvV,gghghg&time=2021-08-19 20:43:39&after=false' \
+curl --location --request GET 'localhost:8084/player/list?players=vvV,gghghg&time=2021-08-19 20:43:39&after=false' \
 --header 'Cookie: JSESSIONID=AC54ACC006FB760C4C83A09B20E4AFC8'
 ```
 
